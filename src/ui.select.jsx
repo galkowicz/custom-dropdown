@@ -56,6 +56,15 @@ class UISelect extends Component {
         this.setState({isOpen: true});
     }
 
+    arrowScroll(index) {
+        const list = this.refs.list;
+        const listItems = list.children;
+        const listTop = listItems[0];
+        const target = listItems[index];
+        const dis = target.offsetTop - listTop.offsetTop;
+        list.scrollTop = dis - (this.refs.list.offsetHeight / 2) + (target.offsetHeight);
+    }
+
     handleSelect(index) {
         if (index === 0) { // disable the select on the first item
             return;
@@ -75,9 +84,11 @@ class UISelect extends Component {
         switch (event.key) {
             case 'ArrowDown':
                 newIndex + 1 < optionsLength && newIndex++;
+                this.arrowScroll(newIndex);
                 break;
             case 'ArrowUp':
                 newIndex - 1 >= 0 && newIndex--;
+                this.arrowScroll(newIndex);
                 break;
             case 'Enter':
                 this.handleSelect(newIndex);
